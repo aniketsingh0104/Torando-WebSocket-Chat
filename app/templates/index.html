@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block style %}
+<style>
+    body, html {
+        height: 100%;
+        width: 100%;
+    }
+    #chat-message,#chat-message:focus  {
+        border: 1px solid #00d1b2;
+        border-radius: 5px;
+        max-height: 200px;
+        min-height: 3em;
+        overflow: auto;
+        padding-left: 5px;
+    }
+    #container {
+        height: 100vh;
+    }
+    #bottom {
+        margin-top: auto;
+    }
+    #room-create {
+        border-right: 1px solid #00d1b2;
+    }
+    #chat-room {
+        position: relative;
+        /* top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0; */
+        border: 1px solid #00d1b2;
+        border-radius: 5px;
+        height: 100%;
+        /* margin: 0px auto; */
+        
+    }
+    .chat-tag {
+        display: block;
+    }
+    /* div[contenteditable]{
+        border: 1px solid black;
+        max-height: 200px;
+        overflow: auto;
+    } */
+</style>
+{% end %}
+{% block body %}
+    <div class="container is-fluid">
+        <div class="notification">
+            <div class="columns" id="container">
+                <div class="column is-3 has-text-centered" id="room-create">
+                    <input class="input mb-5" type="text" placeholder="Enter Chat Room # to Join" id="room-id">
+                    <input class="button is-primary mb-5" type="submit" id="room-submit" value="New Room">
+                    <h5 id="message">Connecting...</h5>
+                </div>
+                <div class="column" id="bottom">
+                    <div class="columns">
+                        <div class="column">
+                            <div id="chat-room" class="columns">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <p class="control">
+                                    <textarea class="textarea is-primary is-small has-fixed-size" placeholder="Primary textarea" id="chat-message"></textarea>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column has-text-centered">
+                            <button class="button is-primary" id="send">Send<i class="far fa-paper-plane" style="margin-left: 4px;"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% end %}
+{% block js %}
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script type="text/javascript" src="{{ static_url('main.js') }}"></script>
+{% end %}

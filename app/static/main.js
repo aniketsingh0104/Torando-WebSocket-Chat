@@ -4,6 +4,7 @@ var APP = {
     connected: false,
     roomOn: false,
     roomId: null,
+    isPaired: false,
 
     sendMessage: function(data) {
         APP.socket.send(JSON.stringify(data));
@@ -13,9 +14,9 @@ var APP = {
     appendChatMessage: function(message, owner) {
         let messageELement = null;
         if(owner === "user") {
-            messageELement = '<div class="column"><span class="tag is-primary chat-tag">' + message + '</span></div>'
+            messageELement = '<div class="column is-full"><span class="tag is-primary chat-tag">' + message + '</span></div>'
         } else {
-            messageELement = '<div class="column"><span class="tag is-info chat-tag">' + message + '</span></div>'
+            messageELement = '<div class="column is-full"><span class="tag is-info chat-tag">' + message + '</span></div>'
         }
         $("#chat-room").append(messageELement);
     },
@@ -50,6 +51,7 @@ var APP = {
         APP.socket.onerror = function(error) {
             APP.connected = false;
             APP.roomOn = false;
+            APP.isPaired = false;
             APP.messageUpdate('Connection Error');
         };
 
@@ -76,6 +78,7 @@ var APP = {
         $("#room-submit")[0].style.backgroundColor = "";
         $("#room-submit").val("New Room");
         APP.roomOn = false;
+        APP.isPaired = false;
         APP.roomId = null;
     },
 
@@ -131,6 +134,7 @@ var APP = {
                 break;
             case "paired": // both users have joined
                 APP.roomStarted(data.room_id);
+                APP.isPaired = true;
                 APP.messageUpdate("Start Chatting....");
                 break;
             case "message":
@@ -193,19 +197,14 @@ $("#room-submit").click(function() {
 
 function messageSender() {
     let message  = $("#chat-message").val();
-    console.log("Message value: " + message);
-    if(message) {
+    // console.log("Message value: " + message);
+    if(message && APP.isPaired) {
         $("#chat-message").val('');
         APP.sendUserMessage(message);
     }
 }
 
 $("#send").click(messageSender);
-$("#chat-messsage").keypress(function(e) {
-    if(e.which == 13) {
-        messageSender();
-    }
-})
 
 
 
